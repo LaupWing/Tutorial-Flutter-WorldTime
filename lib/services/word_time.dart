@@ -8,7 +8,10 @@ class WorldTime{
   String time;
   String flag;
   String endpoint;
+  bool isDayTime;
+
   WorldTime({this.location, this.flag, this.endpoint});
+
   Future<void> getTime() async {
     try{
       Response response = await get('http://worldtimeapi.org/api/timezone/$endpoint');
@@ -20,6 +23,7 @@ class WorldTime{
       now = now.add(Duration(hours: int.parse(offset)));
 
       time = DateFormat.jm().format(now);
+      isDayTime = now.hour > 6 && now.hour < 20 ? true : false;
     }catch(e){
       print('There is an error $e');
       time = 'Could not get time data';
